@@ -13,18 +13,18 @@ import java.util.regex.Pattern;
 public class RikaiUtils {
     // b站相关正则
     private static final String BILIBILI_REX = "(BV|AV|bv|av)([a-zA-Z]|[0-9])+";
-    // 协议正则
-    private static final String PROTOCOL_REX = "protno";
+    // url正则
+    private static final String URL_REX = "(https?|ss|ftp)://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)";
     // ip正则
-    private static final String IP_REX = "ipno";
+    private static final String IP_REX = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
     // 验证码
-    private static final String CODE_REX = "codeno";
+    private static final String CODE_REX = "[0-9]{4,8}";
     // 正则map
     private static final HashMap<RikaiType, Pattern> PATTERN_MAP = new HashMap<>();
 
     static {
         PATTERN_MAP.put(RikaiType.bilibili, Pattern.compile(BILIBILI_REX));
-        PATTERN_MAP.put(RikaiType.protocol, Pattern.compile(PROTOCOL_REX));
+        PATTERN_MAP.put(RikaiType.url, Pattern.compile(URL_REX));
         PATTERN_MAP.put(RikaiType.ip, Pattern.compile(IP_REX));
         PATTERN_MAP.put(RikaiType.code, Pattern.compile(CODE_REX));
     }
