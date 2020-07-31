@@ -75,7 +75,8 @@ public class Test {
     @org.junit.Test
     public void codeTest() {
         String text = "1214512584yanzhenma\n" +
-                "nideyanzhenmashi4431qingjieshou\n";
+                "nideyanzhenmashi4431qingjieshou\n" +
+                "4431,4431,12145125";
         String[] codes = {"12145125", "4431"};
         Map<RikaiType, List<String>> rikaiRes = RikaiUtils.rikai(text);
         List<String> res = rikaiRes.get(RikaiType.code);

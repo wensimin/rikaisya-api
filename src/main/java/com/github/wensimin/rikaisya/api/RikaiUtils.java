@@ -1,9 +1,6 @@
 package com.github.wensimin.rikaisya.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,9 +36,11 @@ public class RikaiUtils {
         PATTERN_MAP.forEach((key, value) -> {
             Matcher matcher = value.matcher(sourceText);
             List<String> groups = new ArrayList<>();
+            Set<String> set = new HashSet<>();
             while (matcher.find()) {
-                groups.add(matcher.group());
+                set.add(matcher.group());
             }
+            groups.addAll(set);
             if (!groups.isEmpty()) {
                 resMap.put(key, groups);
             }

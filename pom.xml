@@ -6,8 +6,31 @@
 
     <groupId>com.github.wensimin</groupId>
     <artifactId>rikaisya.api</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
+    <name>rikaisya-api</name>
+    <url>https://github.com/wensimin/rikaisya-api</url>
+    <description>rikaisya项目依赖api</description>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>shali</name>
+            <email>hukaizhiyu2@gmail.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:wensimin/rikaisya-api.git</connection>
+        <developerConnection>scm:git:git@github.com:wensimin/rikaisya-api.git</developerConnection>
+        <url>git@github.com:wensimin/rikaisya-api.git</url>
+    </scm>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -18,8 +41,9 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <build>
 
+
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -29,6 +53,31 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!-- GPG -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>rikaisya</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>rikaisya</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
 </project>
