@@ -3,6 +3,7 @@ import com.github.wensimin.rikaisya.api.RikaiType;
 import com.github.wensimin.rikaisya.api.RikaiUtils;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -95,9 +96,10 @@ public class Test {
     public void base64Test() {
         String badText = "ss://eGNoYWNoYTIwLWlldGYtcG9seTEzMDU6NzUzOTUxYW5uY@192.168.0.200:44444/?plugin=C%3a%5cUsers%5cwensimin%5cDownloads%5cobfs-local%5cobfs-local.exe%3bobfs%3dhttp%3bobfs-host%3dbing.com#haproxy";
         assert RikaiUtils.rikai(badText).stream().filter(r -> r.getType() == RikaiType.base64).count() == 0;
-        String text = "bmlzaGlzaGFiaW1h";
-        String rikaiText = "nishishabima";
+        String text = "eGNoYWNoYTIwLWlldGYtcG9seTEzMDU6NzUzOTUxYW5uYQ==";
+        String rikaiText = "xchacha20-ietf-poly1305:753951anna";
         Set<Rikai> res = RikaiUtils.rikai(text);
+        assert new String(Base64.getDecoder().decode(text)).equals(rikaiText);
         assert res.size() == 1;
         res.forEach(rikai -> {
             assert rikai.getType() == RikaiType.base64;

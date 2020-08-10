@@ -17,7 +17,7 @@ public class RikaiUtils {
     // 验证码
     private static final String CODE_REX = "[0-9]{4,8}";
     // base64
-    private static final String BASE64_REX = "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$";
+    private static final String BASE64_REX = "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}(={1,2})?)?$";
 
     private static final ArrayList<RikaiMethod> METHODS = new ArrayList<>();
     static {
@@ -41,7 +41,11 @@ public class RikaiUtils {
                 String text = matcher.group();
                 String rikaiText = null;
                 if (m.getFunction() != null) {
-                    rikaiText = m.getFunction().rikai(text);
+                    try {
+                        rikaiText = m.getFunction().rikai(text);
+                    } catch (Exception e) {
+                        rikaiText = "error";
+                    }
                 }
                 rikaiSet.add(new Rikai(text, m.getType(), rikaiText));
             }
