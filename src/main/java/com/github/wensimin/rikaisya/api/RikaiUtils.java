@@ -16,35 +16,37 @@ public class RikaiUtils {
     private static final String IP_REX = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\.([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
     // 验证码
     private static final String CODE_REX = "[0-9]{4,8}";
-    // 正则map
-    private static final HashMap<RikaiType, Pattern> PATTERN_MAP = new HashMap<>();
+    // base64
+    private static final String BASE64_REX = "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$";
 
+    private static final ArrayList<RikaiMethod> METHODS = new ArrayList<>();
     static {
-        PATTERN_MAP.put(RikaiType.bilibili, Pattern.compile(BILIBILI_REX));
-        PATTERN_MAP.put(RikaiType.url, Pattern.compile(URL_REX));
-        PATTERN_MAP.put(RikaiType.ip, Pattern.compile(IP_REX));
-        PATTERN_MAP.put(RikaiType.code, Pattern.compile(CODE_REX));
+        METHODS.add(new RikaiMethod(RikaiType.bilibili, Pattern.compile(BILIBILI_REX), null));
+        METHODS.add(new RikaiMethod(RikaiType.url, Pattern.compile(URL_REX), null));
+        METHODS.add(new RikaiMethod(RikaiType.ip, Pattern.compile(IP_REX), null));
+        METHODS.add(new RikaiMethod(RikaiType.code, Pattern.compile(CODE_REX), null));
+        METHODS.add(new RikaiMethod(RikaiType.base64, Pattern.compile(BASE64_REX), s -> new String(Base64.getDecoder().decode(s))));
     }
 
     /**
-     * 解析文本
-     * @param sourceText 源文本
-     * @return 文本类型与解析到的文本map
+     * 理解text
+     * @param sourceText 原始text
+     * @return 结果set
      */
-    public static Map<RikaiType, List<String>> rikai(String sourceText) {
-        HashMap<RikaiType, List<String>> resMap = new HashMap<>();
-        PATTERN_MAP.forEach((key, value) -> {
-            Matcher matcher = value.matcher(sourceText);
-            List<String> groups = new ArrayList<>();
-            Set<String> set = new HashSet<>();
+    public static Set<Rikai> rikai(String sourceText) {
+        Set<Rikai> rikaiSet = new HashSet<>();
+        METHODS.forEach(m -> {
+            Matcher matcher = m.getPattern().matcher(sourceText);
             while (matcher.find()) {
-                set.add(matcher.group());
-            }
-            groups.addAll(set);
-            if (!groups.isEmpty()) {
-                resMap.put(key, groups);
+                String text = matcher.group();
+                String rikaiText = null;
+                if (m.getFunction() != null) {
+                    rikaiText = m.getFunction().rikai(text);
+                }
+                rikaiSet.add(new Rikai(text, m.getType(), rikaiText));
             }
         });
-        return resMap;
+        return rikaiSet;
     }
+
 }
