@@ -19,7 +19,7 @@ public class RikaiUtils {
     // base64
     private static final String BASE64_REX = "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}(={1,2})?)?$";
     // 符号成对内容
-    private static final String TAG_REX = "(\\(.+\\)|\\[.+]|\\{.+}|\".+\"|『.+』|<.+>|《.+》|〈.+〉|（.+）)";
+    private static final String TAG_REX = "(\\(.+\\)|\\[.+]|\\{.+\\}|\".+\"|『.+』|<.+>|《.+》|〈.+〉|（.+）)";
 
     private static final ArrayList<RikaiMethod> METHODS = new ArrayList<>();
 
