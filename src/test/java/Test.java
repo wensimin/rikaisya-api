@@ -95,7 +95,7 @@ public class Test {
     @org.junit.Test
     public void base64Test() {
         String badText = "ss://eGNoYWNoYTIwLWlldGYtcG9seTEzMDU6NzUzOTUxYW5uY@192.168.0.200:44444/?plugin=C%3a%5cUsers%5cwensimin%5cDownloads%5cobfs-local%5cobfs-local.exe%3bobfs%3dhttp%3bobfs-host%3dbing.com#haproxy";
-        assert RikaiUtils.rikai(badText).stream().filter(r -> r.getType() == RikaiType.base64).count() == 0;
+        assert RikaiUtils.rikai(badText).stream().noneMatch(r -> r.getType() == RikaiType.base64);
         String text = "eGNoYWNoYTIwLWlldGYtcG9seTEzMDU6NzUzOTUxYW5uYQ==";
         String rikaiText = "xchacha20-ietf-poly1305:753951anna";
         Set<Rikai> res = RikaiUtils.rikai(text);
@@ -105,6 +105,35 @@ public class Test {
             assert rikai.getType() == RikaiType.base64;
             assert rikai.getText().equals(text);
             assert rikai.getRikaiText().equals(rikaiText);
+        });
+    }
+
+    @org.junit.Test
+    public void tagTest() {
+        String text = "『ポニーテールは振り向かせない』\n" +
+                "(ddcccvvvvbb)\n" +
+                "(azssxxcddsaaszsdc)\n" +
+                "{zzzzzzzssw}\n" +
+                "《书名》\n" +
+                "<尖括号>\n" +
+                "\"引号\"\n" +
+                "〈中文尖括号〉\n" +
+                "（中文括号）";
+        String[] trueRes = {
+                "ポニーテールは振り向かせない",
+                "ddcccvvvvbb",
+                "azssxxcddsaaszsdc",
+                "zzzzzzzssw",
+                "书名",
+                "中文尖括号",
+                "中文括号",
+                "引号",
+                "尖括号"
+        };
+        List<String> res = RikaiUtils.rikai(text).stream().map(Rikai::getRikaiText).collect(Collectors.toList());
+        assert res.size() == trueRes.length;
+        Arrays.asList(trueRes).forEach(s -> {
+            assert res.contains(s);
         });
     }
 
